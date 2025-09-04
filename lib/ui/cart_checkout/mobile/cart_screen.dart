@@ -10,6 +10,14 @@ import '../../product/mobile/product_detail/product_detail.dart';
 import '../../utils/consts/colors/colors.dart';
 
 class CartScreen extends ConsumerWidget {
+  double _calculateTotal(List<ProductDetailModel> products, int quantity) {
+    double total = 0;
+    for (var product in products) {
+      total += product.price * quantity;
+    }
+    return total;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch the cart state to ensure UI rebuilds when cart changes
@@ -108,18 +116,87 @@ class CartScreen extends ConsumerWidget {
         },
         itemCount: productDetailList.length,
       ),
-      bottomNavigationBar: ElevatedButton(
-        onPressed: () {
-          OrdersModels order=OrdersModels(
-            productDetailModel: productDetailList,
-            itemAdd: ref.read(itemCountProvider),
-            id: "#123456",
-            dateTime: DateTime.now(),
-            user: ref.read(authProvider.notifier).currentUser!,
-          );
-          ref.read(orderProvider.notifier).addToOrder(order);
-        },
-        child: Text("Check Out"),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Total price display
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Total:",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "\$${_calculateTotal(productDetailList, ref.read(itemCountProvider))}",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            // Checkout button
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () async {
+                  final currentUser = ref.read(authProvider.notifier).currentUser;
+                  if (currentUser == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Please login to checkout")),
+                    );
+                    return;
+                  }
+
+                  try {
+                    // Generate unique order ID
+                    final orderId = "#${DateTime.now().millisecondsSinceEpoch}";
+                    
+                    OrdersModels order = OrdersModels(
+                      productDetailModel: productDetailList,
+                      itemAdd: ref.read(itemCountProvider),
+                      id: orderId,
+                      dateTime: DateTime.now(),
+                      user: currentUser,
+                    );
+                    
+                    // Add order to Hive and update state
+                    await ref.read(orderProvider.notifier).addToOrder(order);
+                    
+                    // Clear cart after successful checkout
+                    ref.read(cartProvider.notifier).clearCart();
+                    ref.read(itemCountProvider.notifier).state = 1;
+                    
+                    // Show success message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Order placed successfully!"),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Error placing order: $e"),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                ),
+                child: Text(
+                  "Check Out",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

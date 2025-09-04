@@ -43,7 +43,7 @@ class AuthService {
         return 'user_not_found';
       }
 
-      if (user.password == password) {
+      if (user.password.toString().trim() == password.toString().trim()) {
         LoggingDetail.isGuest=false;
         return 'login_success';
 

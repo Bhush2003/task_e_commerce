@@ -13,14 +13,17 @@ class SplashScreen extends ConsumerStatefulWidget {
   }
 }
 
-class SplashScreenState extends ConsumerState{
-
+class SplashScreenState extends ConsumerState {
   @override
   void initState() {
     super.initState();
     SignUpController().addAllData(ref);
-    Timer(Duration(seconds: 7),(){
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Login()),(route)=>false);
+    Timer(Duration(seconds: 7), () {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+        (route) => false,
+      );
     });
   }
 
@@ -28,7 +31,9 @@ class SplashScreenState extends ConsumerState{
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1BnZzmFWdEWO__akUfahVvxIZ-QxUM3UhPg&s"),
+        child: Image.network(
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1BnZzmFWdEWO__akUfahVvxIZ-QxUM3UhPg&s",
+        ),
       ),
     );
   }
