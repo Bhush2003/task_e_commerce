@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import '../../repository/auth/model/simple_user.dart';
+import '../../repository/auth/repository/simple_user.dart';
 
 class SimpleAuthController {
   static const String _userBoxName = 'User_Box';

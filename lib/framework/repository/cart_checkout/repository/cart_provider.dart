@@ -45,3 +45,7 @@ final cartDebugProvider = Provider<String>((ref) {
   final cart = ref.watch(cartProvider);
   return 'Cart items: ${cart.map((e) => e.name).join(', ')}';
 });
+
+final itemCountProvider=StateProvider<int>((ref){
+  return 1;
+});

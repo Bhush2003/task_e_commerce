@@ -1,3 +1,7 @@
+import 'package:e_commerce_responsive/framework/provider/auth/auth_provider.dart';
+import 'package:e_commerce_responsive/framework/provider/order/order_provider.dart';
+import 'package:e_commerce_responsive/framework/repository/cart_checkout/model/orders_models.dart';
+import 'package:e_commerce_responsive/ui/utils/consts/theam/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../framework/repository/cart_checkout/repository/cart_provider.dart';
@@ -42,6 +46,7 @@ class CartScreen extends ConsumerWidget {
       body: ListView.separated(
         itemBuilder: (context, index) {
           final product = productDetailList[index];
+          int noOfRequiredOrder = ref.watch(itemCountProvider);
           return ListTile(
             onTap: () {
               Navigator.push(
@@ -75,13 +80,24 @@ class CartScreen extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.add_circle_outline),
+                  onPressed: () {
+                    if (noOfRequiredOrder > 1) {
+                      ref.read(itemCountProvider.notifier).state -= 1;
+                    } else {
+                      ref.read(cartProvider.notifier).removeFromCart(product);
+                    }
+                  },
+                  icon: noOfRequiredOrder == 1
+                      ? Icon(Icons.delete)
+                      : Icon(Icons.remove_circle_outline),
                 ),
-                Text("1"),
+
+                Text('$noOfRequiredOrder'),
                 IconButton(
-                  onPressed: () {},
-                  icon: CircleAvatar(child: Icon(Icons.minimize)),
+                  onPressed: () {
+                    ref.read(itemCountProvider.notifier).state += 1;
+                  },
+                  icon: Icon(Icons.add_circle_outline),
                 ),
               ],
             ),
@@ -91,6 +107,19 @@ class CartScreen extends ConsumerWidget {
           return SizedBox(height: 10);
         },
         itemCount: productDetailList.length,
+      ),
+      bottomNavigationBar: ElevatedButton(
+        onPressed: () {
+          OrdersModels order=OrdersModels(
+            productDetailModel: productDetailList,
+            itemAdd: ref.read(itemCountProvider),
+            id: "#123456",
+            dateTime: DateTime.now(),
+            user: ref.read(authProvider.notifier).currentUser!,
+          );
+          ref.read(orderProvider.notifier).addToOrder(order);
+        },
+        child: Text("Check Out"),
       ),
     );
   }

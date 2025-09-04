@@ -2,12 +2,14 @@ import 'package:e_commerce_responsive/framework/repository/auth/model/user.dart'
 import 'package:e_commerce_responsive/framework/repository/product/model/product_detail_model.dart';
 import 'package:hive/hive.dart';
 
+import '../../auth/repository/simple_user.dart';
+
 part 'orders_models.g.dart';
 
 @HiveType(typeId: 2)
-class OrdersModels{
+class OrdersModels {
   @HiveField(0)
-  final ProductDetailModel productDetailModel;
+  final List<ProductDetailModel> productDetailModel;
 
   @HiveField(1)
   final int itemAdd;
@@ -19,18 +21,23 @@ class OrdersModels{
   final DateTime dateTime;
 
   @HiveField(4)
-  final User user;
+  final SimpleUser user;
 
-  const OrdersModels({required this.productDetailModel,required this.itemAdd,required this.id,required this.dateTime,required this.user});
+  const OrdersModels({
+    required this.productDetailModel,
+    required this.itemAdd,
+    required this.id,
+    required this.dateTime,
+    required this.user,
+  });
 
-  Map<String,dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      "productDetailModel":productDetailModel,
-      "itemAdd":itemAdd,
-      "id":id,
-      "dateTime":dateTime,
-      "user":user
+      "productDetailModel": productDetailModel,
+      "itemAdd": itemAdd,
+      "id": id,
+      "dateTime": dateTime,
+      "user": user,
     };
   }
-
 }

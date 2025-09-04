@@ -51,7 +51,6 @@ class _ProductDetailState extends ConsumerState<ProductDetail> {
               } else {
                 likedList.add(widget.productDetailModel);
               }
-              setState(() {});
             },
             icon: Icon(
               Icons.favorite,

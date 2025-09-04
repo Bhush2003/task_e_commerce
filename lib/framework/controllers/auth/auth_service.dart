@@ -1,13 +1,12 @@
+import 'package:e_commerce_responsive/framework/repository/auth/model/logging_detail.dart';
 import 'package:hive/hive.dart';
 import '../../repository/auth/model/user.dart';
 
 class AuthService {
   static const String _userBoxName = 'User_Box';
 
-  // Get the user box
   static Box<User> get _userBox => Hive.box<User>(_userBoxName);
 
-  // Store user during signup
   static Future<void> storeUser(User user) async {
     try {
       await _userBox.put(user.email.toLowerCase().trim(), user);
@@ -18,7 +17,6 @@ class AuthService {
     }
   }
 
-  // Get user by email
   static User? getUser(String email) {
     try {
       return _userBox.get(email.toLowerCase().trim());
@@ -46,7 +44,9 @@ class AuthService {
       }
 
       if (user.password == password) {
+        LoggingDetail.isGuest=false;
         return 'login_success';
+
       } else {
         return 'wrong_password';
       }
@@ -56,7 +56,6 @@ class AuthService {
     }
   }
 
-  // Get current logged in user
   static User? getCurrentUser() {
     try {
       // For simplicity, return the first user found

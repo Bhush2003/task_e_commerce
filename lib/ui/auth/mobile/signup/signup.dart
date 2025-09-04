@@ -1,6 +1,7 @@
 import 'dart:io';
-
+import 'package:e_commerce_responsive/framework/repository/auth/model/logging_detail.dart';
 import 'package:e_commerce_responsive/framework/repository/auth/model/user.dart';
+import 'package:e_commerce_responsive/ui/dashbord/mobile/dashbord.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -222,7 +223,10 @@ class _SignupState extends State<Signup> {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      LoggingDetail.isGuest=true;
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard()));
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.secondary,
                       minimumSize: Size(300, 60),

@@ -13,7 +13,7 @@ class Login extends ConsumerWidget {
   Login({super.key});
 
   bool isValidate(String value) {
-    if (value!.isEmpty ||
+    if (value.isEmpty ||
         !RegExp(
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
         ).hasMatch(value)) {
@@ -99,10 +99,11 @@ class Login extends ConsumerWidget {
                           passwordController.text,
                         );
                         if (result == login_success) {
-                          Navigator.of(context).pushReplacement(
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                               builder: (context) => Dashboard(),
                             ),
+                            (route) => false,
                           );
                         } else {
                           showDialog(

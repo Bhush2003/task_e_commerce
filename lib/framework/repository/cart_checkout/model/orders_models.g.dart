@@ -17,11 +17,11 @@ class OrdersModelsAdapter extends TypeAdapter<OrdersModels> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return OrdersModels(
-      productDetailModel: fields[0] as ProductDetailModel,
+      productDetailModel: (fields[0] as List).cast<ProductDetailModel>(),
       itemAdd: fields[1] as int,
       id: fields[2] as String,
       dateTime: fields[3] as DateTime,
-      user: fields[4] as User,
+      user: fields[4] as SimpleUser,
     );
   }
 

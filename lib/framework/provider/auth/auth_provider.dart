@@ -1,8 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
-import '../../repository/auth/model/simple_user.dart';
+import '../../repository/auth/repository/simple_user.dart';
 
 class AuthNotifier extends StateNotifier<SimpleUser?> {
+
   AuthNotifier() : super(null) {
     _loadCurrentUser();
   }

@@ -18,5 +18,4 @@ class DashboardStateNotifier extends StateNotifier<List<ProductDetailModel>>{
     state.addAll(productDetailList);
     state=[...state, ...productDetailList ];
   }
-
 }

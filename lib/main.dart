@@ -1,5 +1,4 @@
 import 'package:e_commerce_responsive/framework/repository/auth/model/user.dart';
-import 'package:e_commerce_responsive/ui/auth/mobile/login/login.dart';
 import 'package:e_commerce_responsive/ui/splash_scren.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +8,7 @@ import 'framework/repository/product/model/product_detail_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
 
   Hive.registerAdapter(UserAdapter());

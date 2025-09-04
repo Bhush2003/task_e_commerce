@@ -12,57 +12,66 @@ class ProductList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List productDetailList = ref.watch(dashboardProvider);
     return Scaffold(
-      body: Consumer(
-        builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          return ListView.separated(
-            shrinkWrap: true,
-            itemCount: productDetailList.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductDetail(
-                          productDetailModel: productDetailList[index],
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              flex: 11,
+              child: ListView.separated(
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                itemCount: productDetailList.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetail(
+                            productDetailModel: productDetailList[index],
+                          ),
+                        ),
+                      );
+                    },
+                    leading: Container(
+                      height: 100,
+                      width: 100,
+                      padding: EdgeInsetsGeometry.all(5),
+                      decoration: BoxDecoration(
+                        color: AppColors.secondary,
+                        image: DecorationImage(
+                          image: NetworkImage(productDetailList[index].url[0]),
+                          fit: BoxFit.cover,
                         ),
                       ),
-                    );
-                  },
-                  leading: Container(
-                    height: 100,
-                    width: 100,
-                    padding: EdgeInsetsGeometry.all(5),
-                    decoration: BoxDecoration(
-                      color: AppColors.secondary,
-                      image: DecorationImage(
-                        image: NetworkImage(productDetailList[index].url[0]),
-                        fit: BoxFit.cover,
-                      ),
                     ),
-                  ),
-                  title: Text(productDetailList[index].name),
-                  subtitle: Text(
-                    productDetailList[index].description,
-                    softWrap: true,
-                  ),
-                  trailing: ref.watch(cartProvider).contains(productDetailList[index])
-                      ? Container(width: 0,)
-                      : IconButton(
-                    onPressed: () {
-                      ref
-                          .read(dashboardProvider.notifier)
-                          .addCart(ref, productDetailList[index]);
-                    },
-                    icon: Icon(Icons.add_shopping_cart),
-                  )
-              );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(height: 8);
-            },
-          );
-        },
+                    title: Text(productDetailList[index].name),
+                    subtitle: Text(
+                      productDetailList[index].description,
+                      softWrap: true,
+                    ),
+                    trailing:
+                        ref.watch(cartProvider).contains(productDetailList[index])
+                        ? Container(width: 0)
+                        : IconButton(
+                            onPressed: () {
+                              ref
+                                  .read(dashboardProvider.notifier)
+                                  .addCart(ref, productDetailList[index]);
+                            },
+                            icon: Icon(Icons.add_shopping_cart),
+                          ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return SizedBox(height: 8);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
