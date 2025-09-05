@@ -1,11 +1,9 @@
 import 'package:e_commerce_responsive/framework/provider/auth/auth_provider.dart';
 import 'package:e_commerce_responsive/framework/provider/order/order_provider.dart';
 import 'package:e_commerce_responsive/framework/repository/cart_checkout/model/orders_models.dart';
-import 'package:e_commerce_responsive/ui/utils/consts/theam/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../framework/repository/cart_checkout/repository/cart_provider.dart';
-import '../../../framework/repository/product/model/product_detail_model.dart';
 import '../../product/mobile/product_detail/product_detail.dart';
 import '../../utils/consts/colors/colors.dart';
 
@@ -14,8 +12,6 @@ class CartScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch the cart state to ensure UI rebuilds when cart changes
     final productDetailList = ref.watch(cartProvider);
-
-    print('Cart screen rebuild - Cart count: ${productDetailList.length}');
 
     if (productDetailList.isEmpty) {
       return Scaffold(

@@ -1,4 +1,3 @@
-import 'package:e_commerce_responsive/framework/repository/auth/model/user.dart';
 import 'package:e_commerce_responsive/framework/repository/product/model/product_detail_model.dart';
 import 'package:hive/hive.dart';
 

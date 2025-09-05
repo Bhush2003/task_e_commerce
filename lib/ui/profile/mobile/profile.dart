@@ -1,19 +1,20 @@
 import 'dart:io';
 import 'package:e_commerce_responsive/framework/provider/auth/auth_provider.dart';
 import 'package:e_commerce_responsive/framework/repository/auth/model/logging_detail.dart';
+import 'package:e_commerce_responsive/framework/repository/auth/repository/simple_user.dart';
 import 'package:e_commerce_responsive/ui/auth/mobile/login/login.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/theam/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../framework/repository/auth/model/user.dart';
+
 
 class Profile extends ConsumerWidget {
-  final User user;
-  const Profile({super.key, required this.user});
+  const Profile({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    SimpleUser? user=ref.read(authProvider.notifier).currentUser;
     return Scaffold(
       body: Center(
         child: Column(
@@ -30,7 +31,7 @@ class Profile extends ConsumerWidget {
             SizedBox(height: 10),
 
             Text(
-              user.email,
+              user!.email,
               style: AppTextStyle.headerStyle(24, FontWeight.w500),
             ),
 

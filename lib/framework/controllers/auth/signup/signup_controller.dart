@@ -1,12 +1,12 @@
 import 'package:e_commerce_responsive/framework/provider/auth/auth_provider.dart';
 import 'package:e_commerce_responsive/framework/repository/auth/model/logging_detail.dart';
+import 'package:e_commerce_responsive/framework/repository/auth/repository/simple_user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../repository/auth/model/user.dart';
 import '../../../repository/dashbord/repository/dashboard_provider.dart';
 import '../auth_service.dart';
 
 class SignUpController {
-  static void addUser(User user) async {
+  static void addUser(SimpleUser user) async {
     try {
       await AuthService.storeUser(user);
       print("User added successfully: ${user.email}");
@@ -27,6 +27,6 @@ class SignUpController {
 
   void addAllData(WidgetRef ref) async {
     await ref.read(dashboardProvider.notifier).addAllData();
-    LoggingDetail.isLogged=await ref.read(authProvider.notifier).isAuthenticated;
+    LoggingDetail.isLogged= ref.read(authProvider.notifier).isAuthenticated;
   }
 }

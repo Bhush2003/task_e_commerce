@@ -1,4 +1,4 @@
-import 'package:e_commerce_responsive/framework/repository/auth/model/user.dart';
+import 'package:e_commerce_responsive/framework/repository/auth/repository/simple_user.dart';
 import 'package:e_commerce_responsive/ui/splash_scren.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,11 +11,11 @@ void main() async {
 
   await Hive.initFlutter();
 
-  Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(SimpleUserAdapter());
   Hive.registerAdapter(OrdersModelsAdapter());
   Hive.registerAdapter(ProductDetailModelAdapter());
 
-  await Hive.openBox<User>('User_Box');
+  await Hive.openBox<SimpleUser>('User_Box');
   await Hive.openBox<OrdersModels>('Orders_Box');
   await Hive.openBox<ProductDetailModel>('Product_Box');
 

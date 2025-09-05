@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'product_detail_model.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 0)
 class ProductDetailModel{
   @HiveField(0)
   final List<String> url;

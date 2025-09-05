@@ -1,24 +1,24 @@
 import 'dart:io';
 import 'package:e_commerce_responsive/framework/repository/auth/model/logging_detail.dart';
 import 'package:e_commerce_responsive/framework/repository/auth/repository/simple_user.dart';
-import 'package:e_commerce_responsive/ui/dashbord/mobile/dashbord.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../framework/controllers/auth/signup/signup_controller.dart';
+import '../../../dashbord/responsive_dashbrd.dart';
 import '../../../utils/consts/theam/app_text_style.dart';
 import '../../helper/text_field_email.dart';
 import '../../helper/text_fild_password.dart';
 import '../login/login.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({super.key});
+class SignupWeb extends StatefulWidget {
+  const SignupWeb({super.key});
 
   @override
-  State<Signup> createState() => _SignupState();
+  State<SignupWeb> createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup> {
+class _SignupState extends State<SignupWeb> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -78,24 +78,26 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: SingleChildScrollView(
+      body: Center(
+        child: Container(
+          height: 500,
+          width: 300,
+          alignment: Alignment.center,
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
-                SizedBox(height: 80),
-                Center(
-                  child: Text(
-                    "SignUp",
-                    style: AppTextStyle.headerStyle(28, FontWeight.w900),
-                  ),
+
+
+                Text(
+                  "SignUp",
+                  style: AppTextStyle.headerStyle(28, FontWeight.w900),
                 ),
 
-                SizedBox(height: 30),
+                SizedBox(height: 15),
 
                 Center(
                   child: GestureDetector(
@@ -105,7 +107,7 @@ class _SignupState extends State<Signup> {
                       });
                     },
                     child: CircleAvatar(
-                      radius: 80,
+                      radius: 60,
                       backgroundImage: image != null
                           ? FileImage(image!)
                           : AssetImage(""),
@@ -122,12 +124,15 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
 
-                Text(
-                  "Email",
-                  style: AppTextStyle.headerStyle(24, FontWeight.w500),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Email",
+                    style: AppTextStyle.headerStyle(20, FontWeight.w500),
+                  ),
                 ),
 
-                SizedBox(height: 10),
+                SizedBox(height:5),
 
                 TextFieldEmail(
                   controller: emailController,
@@ -142,14 +147,17 @@ class _SignupState extends State<Signup> {
                   errorText: Text("enter valid email"),
                 ),
 
-                SizedBox(height: 30),
+                SizedBox(height: 15),
 
-                Text(
-                  "Password",
-                  style: AppTextStyle.headerStyle(24, FontWeight.w500),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Password",
+                    style: AppTextStyle.headerStyle(20, FontWeight.w500),
+                  ),
                 ),
 
-                SizedBox(height: 10),
+                SizedBox(height: 5),
 
                 TextFieldPassword(
                   controller: passwordController,
@@ -163,7 +171,7 @@ class _SignupState extends State<Signup> {
                   },
                 ),
 
-                SizedBox(height: 40),
+                SizedBox(height: 20),
 
                 Center(
                   child: ElevatedButton(
@@ -188,12 +196,12 @@ class _SignupState extends State<Signup> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(300, 60),
+                      minimumSize: Size(300, 50),
                       backgroundColor: AppColors.secondary,
                     ),
                     child: Text(
                       "SignUp",
-                      style: AppTextStyle.headerStyle(24, FontWeight.w500),
+                      style: AppTextStyle.headerStyle(20, FontWeight.w500),
                     ),
                   ),
                 ),
@@ -203,18 +211,18 @@ class _SignupState extends State<Signup> {
                   children: [
                     Text(
                       "Already have account? ",
-                      style: AppTextStyle.headerStyle(16, FontWeight.w400),
+                      style: AppTextStyle.headerStyle(14, FontWeight.w400),
                     ),
                     TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Login()),
+                          MaterialPageRoute(builder: (context) => LoginWeb()),
                         );
                       },
                       child: Text(
                         "Login",
-                        style: AppTextStyle.headerStyle(16, FontWeight.w400),
+                        style: AppTextStyle.headerStyle(14, FontWeight.w400),
                       ),
                     ),
                   ],
@@ -225,15 +233,15 @@ class _SignupState extends State<Signup> {
                   child: ElevatedButton(
                     onPressed: () {
                       LoggingDetail.isGuest=true;
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ResponsiveLayoutDashbord()));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.secondary,
-                      minimumSize: Size(300, 60),
+                      minimumSize: Size(300, 50),
                     ),
                     child: Text(
                       "Login as Guest",
-                      style: AppTextStyle.headerStyle(24, FontWeight.w500),
+                      style: AppTextStyle.headerStyle(20, FontWeight.w500),
                     ),
                   ),
                 ),

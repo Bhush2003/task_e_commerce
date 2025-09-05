@@ -1,13 +1,13 @@
 import 'package:e_commerce_responsive/framework/repository/auth/model/logging_detail.dart';
+import 'package:e_commerce_responsive/framework/repository/auth/repository/simple_user.dart';
 import 'package:hive/hive.dart';
-import '../../repository/auth/model/user.dart';
 
 class AuthService {
   static const String _userBoxName = 'User_Box';
 
-  static Box<User> get _userBox => Hive.box<User>(_userBoxName);
+  static Box<SimpleUser> get _userBox => Hive.box<SimpleUser>(_userBoxName);
 
-  static Future<void> storeUser(User user) async {
+  static Future<void> storeUser(SimpleUser user) async {
     try {
       await _userBox.put(user.email.toLowerCase().trim(), user);
       print('User stored successfully: ${user.email}');
@@ -17,7 +17,7 @@ class AuthService {
     }
   }
 
-  static User? getUser(String email) {
+  static SimpleUser? getUser(String email) {
     try {
       return _userBox.get(email.toLowerCase().trim());
     } catch (e) {
@@ -56,7 +56,7 @@ class AuthService {
     }
   }
 
-  static User? getCurrentUser() {
+  static SimpleUser? getCurrentUser() {
     try {
       // For simplicity, return the first user found
       // In a real app, you'd store the current user's email in shared preferences
