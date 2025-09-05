@@ -1,31 +1,66 @@
 import 'package:e_commerce_responsive/framework/repository/cart_checkout/model/orders_models.dart';
+import 'package:e_commerce_responsive/framework/repository/cart_checkout/repository/order_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 
 final orderProvider = StateNotifierProvider<OrderNotifier, List<OrdersModels>>((ref) {
   return OrderNotifier();
 });
 
-class OrderNotifier extends StateNotifier<List<OrdersModels>>{
-  OrderNotifier(): super([]);
+class OrderNotifier extends StateNotifier<List<OrdersModels>> {
+  OrderNotifier() : super([]) {
+    _loadOrders();
+  }
 
-  void addToOrder(OrdersModels product) {
-    if (!state.any((item) => item.productDetailModel[0].name == product.productDetailModel[0].name)) {
-      state = [...state, product];
+  final OrderRepository _orderRepository = OrderRepository();
+
+  Future<void> _loadOrders() async {
+    try {
+      await _orderRepository.init();
+      final orders = _orderRepository.getAllOrders();
+      state = orders;
+    } catch (e) {
+      print('Error loading orders: $e');
+      state = [];
     }
   }
 
-  void removeFromOrder(OrdersModels product) {
-    state = state.where((item) => item.productDetailModel[0].name != product.productDetailModel[0].name).toList();
+  Future<void> addToOrder(OrdersModels order) async {
+    try {
+      await _orderRepository.addOrder(order);
+      state = [...state, order];
+    } catch (e) {
+      print('Error adding order: $e');
+      rethrow;
+    }
   }
 
-  void clearCart() {
-    state = [];
+  Future<void> removeFromOrder(String orderId) async {
+    try {
+      await _orderRepository.removeOrder(orderId);
+      state = state.where((item) => item.id != orderId).toList();
+    } catch (e) {
+      print('Error removing order: $e');
+      rethrow;
+    }
   }
 
-  bool isInCart(OrdersModels product) {
-    return state.any((item) => item.productDetailModel[0].name == product.productDetailModel[0].name);
+  Future<void> clearAllOrders() async {
+    try {
+      await _orderRepository.clearAllOrders();
+      state = [];
+    } catch (e) {
+      print('Error clearing orders: $e');
+      rethrow;
+    }
   }
 
-  int get cartItemCount => state.length;
+  List<OrdersModels> getOrdersByUser(String userEmail) {
+    return _orderRepository.getOrdersByUser(userEmail);
+  }
+
+  bool isInOrder(OrdersModels order) {
+    return state.any((item) => item.id == order.id);
+  }
+
+  int get orderCount => state.length;
 }

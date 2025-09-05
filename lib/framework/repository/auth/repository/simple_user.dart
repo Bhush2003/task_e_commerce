@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 part 'simple_user.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 0)
 class SimpleUser {
   @HiveField(0)
   final String userId;
@@ -27,5 +27,3 @@ class SimpleUser {
     return 'SimpleUser{userId: $userId, email: $email, password: $password, imagePath: $imagePath}';
   }
 }
-
-

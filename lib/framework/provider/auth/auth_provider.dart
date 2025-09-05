@@ -3,7 +3,6 @@ import 'package:hive/hive.dart';
 import '../../repository/auth/repository/simple_user.dart';
 
 class AuthNotifier extends StateNotifier<SimpleUser?> {
-
   AuthNotifier() : super(null) {
     _loadCurrentUser();
   }
@@ -52,5 +51,3 @@ class AuthNotifier extends StateNotifier<SimpleUser?> {
 final authProvider = StateNotifierProvider<AuthNotifier, SimpleUser?>((ref) {
   return AuthNotifier();
 });
-
-
