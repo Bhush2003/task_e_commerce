@@ -1,14 +1,18 @@
+import 'package:e_commerce_responsive/framework/controllers/auth/auth_service.dart';
 import 'package:e_commerce_responsive/framework/controllers/auth/signup/signup_controller.dart';
+import 'package:e_commerce_responsive/framework/provider/auth/auth_provider.dart';
+import 'package:e_commerce_responsive/responsive_dashboard.dart';
+import 'package:e_commerce_responsive/ui/auth/mobile/signup/signup.dart';
+import 'package:e_commerce_responsive/ui/auth/web/signup/signup.dart';
+import 'package:e_commerce_responsive/ui/dashbord/web/dashbord.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/app_key.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../dashbord/mobile/dashbord.dart';
-import '../../../dashbord/responsive_dashbrd.dart';
 import '../../../utils/consts/theam/app_text_style.dart';
 import '../../helper/text_field_email.dart';
 import '../../helper/text_fild_password.dart';
-import '../signup/signup.dart';
 
 class LoginWeb extends ConsumerWidget {
   LoginWeb({super.key});
@@ -24,8 +28,8 @@ class LoginWeb extends ConsumerWidget {
   }
 
   final _formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -62,12 +66,13 @@ class LoginWeb extends ConsumerWidget {
                     TextFieldEmail(
                       controller: emailController,
                       validator: (value) {
-                        if (value == null) {
+                        if (value == null || value.isEmpty) {
                           return "Email is required";
                         }
                         if (!isValidate(value)) {
                           return "Enter valid email";
                         }
+                        return null;
                       },
                       errorText: Text("enter valid email"),
                     ),
@@ -104,9 +109,16 @@ class LoginWeb extends ConsumerWidget {
                               passwordController.text,
                             );
                             if (result == login_success) {
+                              // Update auth provider state with the logged-in user
+                              final user = AuthService.getUser(
+                                emailController.text,
+                              );
+                              if (user != null) {
+                                ref.read(authProvider.notifier).state = user;
+                              }
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                  builder: (context) => Dashboard(),
+                                  builder: (context) => ResponsiveLayoutW(mobileBody: Dashboard(), desktopBody: DashboardWeb()),
                                 ),
                                 (route) => false,
                               );
@@ -163,12 +175,18 @@ class LoginWeb extends ConsumerWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ResponsiveLayoutDashbord()),
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ResponsiveLayoutW(mobileBody: Signup(), desktopBody: SignupWeb()),
+                              ),
                             );
                           },
                           child: Text(
                             "SignUp",
-                            style: AppTextStyle.headerStyle(14, FontWeight.w400),
+                            style: AppTextStyle.headerStyle(
+                              14,
+                              FontWeight.w400,
+                            ),
                           ),
                         ),
                       ],

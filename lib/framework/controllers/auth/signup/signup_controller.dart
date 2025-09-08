@@ -7,22 +7,11 @@ import '../auth_service.dart';
 
 class SignUpController {
   static void addUser(SimpleUser user) async {
-    try {
-      await AuthService.storeUser(user);
-      print("User added successfully: ${user.email}");
-    } catch (e) {
-      print("Error adding user: $e");
-      throw Exception('Failed to add user');
-    }
+    await AuthService.storeUser(user);
   }
 
   Future<String> checkUser(String email, String password) async {
-    try {
-      return AuthService.authenticateUser(email, password);
-    } catch (e) {
-      print("Error checking user: $e");
-      return 'authentication_error';
-    }
+    return AuthService.authenticateUser(email, password);
   }
 
   void addAllData(WidgetRef ref) async {

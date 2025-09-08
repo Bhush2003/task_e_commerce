@@ -1,3 +1,5 @@
+import 'package:e_commerce_responsive/responsive_dashboard.dart';
+import 'package:e_commerce_responsive/ui/cart_checkout/mobile/cart_screen.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +24,7 @@ class DashboardWeb extends ConsumerWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CartScreenWeb()),
+                MaterialPageRoute(builder: (context) => ResponsiveLayoutW(mobileBody: CartScreen(), desktopBody: CartScreenWeb())),
               );
             },
             icon: Icon(Icons.shopping_cart_outlined),
@@ -31,23 +33,26 @@ class DashboardWeb extends ConsumerWidget {
         centerTitle: true,
       ),
       body: bodyDataListWeb[selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: (index) {
-          ref.read(tabProvider.notifier).state = index;
-        },
-        selectedItemColor: AppColors.text,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag),
-            label: "Product",
-          ),
+      drawer: Drawer(
 
-          BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: "Orders"),
-
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-        ],
       ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   currentIndex: selectedIndex,
+      //   onTap: (index) {
+      //     ref.read(tabProvider.notifier).state = index;
+      //   },
+      //   selectedItemColor: AppColors.text,
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.shopping_bag),
+      //       label: "Product",
+      //     ),
+      //
+      //     BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: "Orders"),
+      //
+      //     BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+      //   ],
+      // ),
     );
   }
 }

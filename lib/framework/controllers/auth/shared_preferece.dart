@@ -7,6 +7,5 @@ class SharedPreferenceObject{
     _sharedPreference = await SharedPreferences.getInstance();
   }
 
-
   get sharedPreference => _sharedPreference;
 }

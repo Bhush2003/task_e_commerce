@@ -6,13 +6,13 @@ class CartNotifier extends StateNotifier<List<ProductDetailModel>> {
 
   void addToCart(ProductDetailModel product) {
     // Check if product is already in cart
-    if (!state.any((item) => item.name == product.name)) {
+    if (!state.any((item) => item == product)) {
       state = [...state, product];
     }
   }
 
   void removeFromCart(ProductDetailModel product) {
-    state = state.where((item) => item.name != product.name).toList();
+    state = state.where((item) => item != product).toList();
   }
 
   void clearCart() {
@@ -20,7 +20,7 @@ class CartNotifier extends StateNotifier<List<ProductDetailModel>> {
   }
 
   bool isInCart(ProductDetailModel product) {
-    return state.any((item) => item.name == product.name);
+    return state.any((item) => item == product);
   }
 
   int get cartItemCount => state.length;
@@ -37,7 +37,7 @@ final isInCartProvider = Provider.family<bool, ProductDetailModel>((
   product,
 ) {
   final cart = ref.watch(cartProvider);
-  return cart.any((item) => item.name == product.name);
+  return cart.any((item) => item== product);
 });
 
 // Debug provider to see cart state

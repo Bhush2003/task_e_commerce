@@ -1,3 +1,5 @@
+import 'package:e_commerce_responsive/responsive_dashboard.dart';
+import 'package:e_commerce_responsive/ui/cart_checkout/web/cart_screen.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,7 +7,6 @@ import '../../../framework/data/appbar_title.dart';
 import '../../../framework/data/body_data_list.dart';
 import '../../../framework/repository/dashbord/repository/tab_provider.dart';
 import '../../cart_checkout/mobile/cart_screen.dart';
-import '../../cart_checkout/web/cart_screen.dart';
 
 class Dashboard extends ConsumerWidget {
   const Dashboard({super.key});
@@ -22,7 +23,7 @@ class Dashboard extends ConsumerWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CartScreen()),
+                MaterialPageRoute(builder: (context) => ResponsiveLayoutW(mobileBody: CartScreen(), desktopBody: CartScreenWeb())),
               );
             },
             icon: Icon(Icons.shopping_cart_outlined),

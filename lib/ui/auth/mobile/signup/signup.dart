@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'package:e_commerce_responsive/framework/provider/auth/auth_provider.dart';
 import 'package:e_commerce_responsive/framework/repository/auth/model/logging_detail.dart';
 import 'package:e_commerce_responsive/framework/repository/auth/repository/simple_user.dart';
+import 'package:e_commerce_responsive/responsive_dashboard.dart';
+import 'package:e_commerce_responsive/ui/auth/web/login/login.dart';
 import 'package:e_commerce_responsive/ui/dashbord/mobile/dashbord.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../framework/controllers/auth/signup/signup_controller.dart';
 import '../../../utils/consts/theam/app_text_style.dart';
@@ -19,8 +23,8 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   void showPicker({required BuildContext context}) {
     showModalBottomSheet(
@@ -132,12 +136,13 @@ class _SignupState extends State<Signup> {
                 TextFieldEmail(
                   controller: emailController,
                   validator: (value) {
-                    if (value == null) {
+                    if (value == null || value.isEmpty) {
                       return "Email is required";
                     }
                     if (!isValidate(value)) {
                       return "Enter valid email";
                     }
+                    return null;
                   },
                   errorText: Text("enter valid email"),
                 ),
@@ -165,37 +170,43 @@ class _SignupState extends State<Signup> {
 
                 SizedBox(height: 40),
 
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        if (image != null) {
-                          SignUpController.addUser(
-                            SimpleUser(
-                              email: emailController.text,
-                              password: passwordController.text,
-                              userId: "#12345",
-                              imagePath: image!
-                                  .path, // Store the path instead of File object
-                            ),
-                          );
-                          Navigator.pop(context);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Please select an image')),
-                          );
-                        }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(300, 60),
-                      backgroundColor: AppColors.secondary,
-                    ),
-                    child: Text(
-                      "SignUp",
-                      style: AppTextStyle.headerStyle(24, FontWeight.w500),
-                    ),
-                  ),
+                Consumer(
+                  builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                    return Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            if (image != null) {
+                              final newUser = SimpleUser(
+                                email: emailController.text,
+                                password: passwordController.text,
+                                userId: "#12345",
+                                imagePath: image!
+                                    .path, // Store the path instead of File object
+                              );
+                              SignUpController.addUser(newUser);
+                              // Update auth provider state with the new user
+                              ref.read(authProvider.notifier).state = newUser;
+                              Navigator.pop(context);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Please select an image')),
+                              );
+                            }
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(300, 60),
+                          backgroundColor: AppColors.secondary,
+                        ),
+                        child: Text(
+                          "SignUp",
+                          style: AppTextStyle.headerStyle(24, FontWeight.w500),
+                        ),
+                      ),
+                    );
+                  },
+
                 ),
 
                 Row(
@@ -207,9 +218,9 @@ class _SignupState extends State<Signup> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => Login()),
+                          MaterialPageRoute(builder: (context) => ResponsiveLayoutW(mobileBody: Login(), desktopBody: LoginWeb())),
                         );
                       },
                       child: Text(
@@ -224,8 +235,11 @@ class _SignupState extends State<Signup> {
                   alignment: Alignment.bottomCenter,
                   child: ElevatedButton(
                     onPressed: () {
-                      LoggingDetail.isGuest=true;
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard()));
+                      LoggingDetail.isGuest = true;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Dashboard()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.secondary,

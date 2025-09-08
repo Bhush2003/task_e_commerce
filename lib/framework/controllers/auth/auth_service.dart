@@ -8,22 +8,16 @@ class AuthService {
   static Box<SimpleUser> get _userBox => Hive.box<SimpleUser>(_userBoxName);
 
   static Future<void> storeUser(SimpleUser user) async {
-    try {
+
       await _userBox.put(user.email.toLowerCase().trim(), user);
-      print('User stored successfully: ${user.email}');
-    } catch (e) {
-      print('Error storing user: $e');
-      throw Exception('Failed to store user');
-    }
+
+
   }
 
   static SimpleUser? getUser(String email) {
-    try {
+
       return _userBox.get(email.toLowerCase().trim());
-    } catch (e) {
-      print('Error getting user: $e');
-      return null;
-    }
+
   }
 
   // Check if user exists
@@ -33,7 +27,7 @@ class AuthService {
 
   // Authenticate user during login
   static String authenticateUser(String email, String password) {
-    try {
+
       if (!userExists(email)) {
         return 'user_not_found';
       }
@@ -50,34 +44,18 @@ class AuthService {
       } else {
         return 'wrong_password';
       }
-    } catch (e) {
-      print('Error authenticating user: $e');
-      return 'authentication_error';
-    }
+
   }
 
   static SimpleUser? getCurrentUser() {
-    try {
-      // For simplicity, return the first user found
-      // In a real app, you'd store the current user's email in shared preferences
-      if (_userBox.isNotEmpty) {
+     if (_userBox.isNotEmpty) {
         return _userBox.values.first;
       }
       return null;
-    } catch (e) {
-      print('Error getting current user: $e');
-      return null;
-    }
   }
 
-  // Clear all users (for testing/debugging)
   static Future<void> clearAllUsers() async {
-    try {
       await _userBox.clear();
-      print('All users cleared');
-    } catch (e) {
-      print('Error clearing users: $e');
-    }
   }
 }
 

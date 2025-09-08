@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 part 'simple_user.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 1)
 class SimpleUser {
   @HiveField(0)
   final String userId;

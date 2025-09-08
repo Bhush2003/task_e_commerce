@@ -1,4 +1,8 @@
+import 'package:e_commerce_responsive/framework/controllers/auth/auth_service.dart';
 import 'package:e_commerce_responsive/framework/controllers/auth/signup/signup_controller.dart';
+import 'package:e_commerce_responsive/responsive_dashboard.dart';
+import 'package:e_commerce_responsive/ui/auth/web/signup/signup.dart';
+import 'package:e_commerce_responsive/ui/dashbord/web/dashbord.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/app_key.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +27,8 @@ class Login extends ConsumerWidget {
   }
 
   final _formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,12 +61,13 @@ class Login extends ConsumerWidget {
                 TextFieldEmail(
                   controller: emailController,
                   validator: (value) {
-                    if (value == null) {
+                    if (value == null || value.isEmpty) {
                       return "Email is required";
                     }
                     if (!isValidate(value)) {
                       return "Enter valid email";
                     }
+                    return null;
                   },
                   errorText: Text("enter valid email"),
                 ),
@@ -99,9 +104,14 @@ class Login extends ConsumerWidget {
                           passwordController.text,
                         );
                         if (result == login_success) {
+                          // Update auth provider state with the logged-in user
+                          final user = AuthService.getUser(
+                            emailController.text,
+                          );
+
                           Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                              builder: (context) => Dashboard(),
+                              builder: (context) => ResponsiveLayoutW(mobileBody: Dashboard(), desktopBody: DashboardWeb()),
                             ),
                             (route) => false,
                           );
@@ -158,7 +168,7 @@ class Login extends ConsumerWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Signup()),
+                          MaterialPageRoute(builder: (context) => ResponsiveLayoutW(mobileBody: Signup(), desktopBody: SignupWeb())),
                         );
                       },
                       child: Text(

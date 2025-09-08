@@ -1,13 +1,10 @@
 import 'package:e_commerce_responsive/framework/provider/auth/auth_provider.dart';
 import 'package:e_commerce_responsive/framework/provider/order/order_provider.dart';
 import 'package:e_commerce_responsive/framework/repository/cart_checkout/model/orders_models.dart';
-import 'package:e_commerce_responsive/ui/utils/consts/theam/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../framework/repository/cart_checkout/repository/cart_provider.dart';
-import '../../../framework/repository/product/model/product_detail_model.dart';
-import '../../product/mobile/product_detail/product_detail.dart';
-import '../../product/web/product_detail.dart' hide ProductDetail;
+import '../../product/web/product_detail.dart';
 import '../../utils/consts/colors/colors.dart';
 
 class CartScreenWeb extends ConsumerWidget {
@@ -115,7 +112,7 @@ class CartScreenWeb extends ConsumerWidget {
       ),
       bottomNavigationBar: ElevatedButton(
         onPressed: () {
-          OrdersModels order=OrdersModels(
+          OrdersModels order = OrdersModels(
             productDetailModel: productDetailList,
             itemAdd: ref.read(itemCountProvider),
             id: "#123456",

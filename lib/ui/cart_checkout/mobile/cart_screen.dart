@@ -1,6 +1,7 @@
 import 'package:e_commerce_responsive/framework/provider/auth/auth_provider.dart';
 import 'package:e_commerce_responsive/framework/provider/order/order_provider.dart';
 import 'package:e_commerce_responsive/framework/repository/cart_checkout/model/orders_models.dart';
+import 'package:e_commerce_responsive/framework/repository/product/model/product_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../framework/repository/cart_checkout/repository/cart_provider.dart';
@@ -138,7 +139,9 @@ class CartScreen extends ConsumerWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () async {
-                  final currentUser = ref.read(authProvider.notifier).currentUser;
+                  final currentUser = ref
+                      .read(authProvider.notifier)
+                      .currentUser;
                   if (currentUser == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Please login to checkout")),
@@ -149,7 +152,7 @@ class CartScreen extends ConsumerWidget {
                   try {
                     // Generate unique order ID
                     final orderId = "#${DateTime.now().millisecondsSinceEpoch}";
-                    
+
                     OrdersModels order = OrdersModels(
                       productDetailModel: productDetailList,
                       itemAdd: ref.read(itemCountProvider),
@@ -157,14 +160,14 @@ class CartScreen extends ConsumerWidget {
                       dateTime: DateTime.now(),
                       user: currentUser,
                     );
-                    
+
                     // Add order to Hive and update state
                     await ref.read(orderProvider.notifier).addToOrder(order);
-                    
+
                     // Clear cart after successful checkout
                     ref.read(cartProvider.notifier).clearCart();
                     ref.read(itemCountProvider.notifier).state = 1;
-                    
+
                     // Show success message
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

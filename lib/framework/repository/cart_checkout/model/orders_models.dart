@@ -1,8 +1,6 @@
 import 'package:e_commerce_responsive/framework/repository/product/model/product_detail_model.dart';
 import 'package:hive/hive.dart';
-
 import '../../auth/repository/simple_user.dart';
-
 part 'orders_models.g.dart';
 
 @HiveType(typeId: 2)

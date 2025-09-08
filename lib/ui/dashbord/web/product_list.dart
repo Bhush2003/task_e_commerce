@@ -4,6 +4,8 @@ import 'package:e_commerce_responsive/ui/utils/consts/theam/app_text_style.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../framework/repository/dashbord/repository/dashboard_provider.dart';
+import '../../../framework/repository/cart_checkout/repository/cart_provider.dart';
+
 
 
 class ProductListWeb extends ConsumerWidget {
@@ -28,8 +30,9 @@ class ProductListWeb extends ConsumerWidget {
                       child: GridView.builder(
                         itemCount: productDetailList.length,
                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 200,
+                          maxCrossAxisExtent: 230,
                         ),
+
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: (){
@@ -50,12 +53,27 @@ class ProductListWeb extends ConsumerWidget {
                                   ),
                             
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Text('${productDetailList[index].price}'),
                                       Text('${productDetailList[index].rating}/5')
                                     ],
-                                  )
+                                  ),
+                                  ref
+                                      .watch(cartProvider)
+                                      .contains(productDetailList[index])
+                                      ? Container(width: 0)
+                                      : IconButton(
+                                    onPressed: () {
+                                      ref
+                                          .read(dashboardProvider.notifier)
+                                          .addCart(
+                                        ref,
+                                        productDetailList[index],
+                                      );
+                                    },
+                                    icon: Icon(Icons.add_shopping_cart),
+                                  ),
                                 ],
                               ),
                             ),

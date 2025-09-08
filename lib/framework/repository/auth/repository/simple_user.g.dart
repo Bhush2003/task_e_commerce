@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../repository/simple_user.dart';
+part of 'simple_user.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

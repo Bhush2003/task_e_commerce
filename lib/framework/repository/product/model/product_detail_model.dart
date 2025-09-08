@@ -1,9 +1,8 @@
 import 'package:hive/hive.dart';
-
 part 'product_detail_model.g.dart';
 
 @HiveType(typeId: 0)
-class ProductDetailModel{
+class ProductDetailModel {
   @HiveField(0)
   final List<String> url;
 
@@ -28,18 +27,36 @@ class ProductDetailModel{
   @HiveField(7)
   final bool isLiked;
 
+  const ProductDetailModel({
+    required this.url,
+    required this.name,
+    required this.category,
+    required this.description,
+    required this.price,
+    required this.avalableCount,
+    required this.rating,
+    required this.isLiked,
+  });
 
-  const ProductDetailModel( {required this.url,required this.name,required this.category,required this.description,required this.price,required this.avalableCount,required this.rating, required this.isLiked,});
-
-  Map<String,dynamic> toJson(){
-    return {
-      "url":url,
-      "name":name,
-      "category":category,
-      "description":description,
-      "price":price,
-      "avalableCount":avalableCount,
-      "rating":rating
-    };
+  ProductDetailModel copyWith({
+    List<String>? url,
+    String? name,
+    String? category,
+    String? description,
+    double? price,
+    int? avalableCount,
+    int? rating,
+    bool? isLiked,
+  }) {
+    return ProductDetailModel(
+      url: url ?? this.url,
+      name: name ?? this.name,
+      category: category ?? this.category,
+      description: description ?? this.category,
+      price: price ?? this.price,
+      avalableCount: avalableCount ?? this.avalableCount,
+      rating: rating ?? this.rating,
+      isLiked: isLiked ?? this.isLiked,
+    );
   }
 }

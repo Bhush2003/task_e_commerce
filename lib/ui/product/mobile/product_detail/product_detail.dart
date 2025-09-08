@@ -1,8 +1,8 @@
+import 'package:e_commerce_responsive/framework/repository/product/repository/liked_list.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/theam/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../framework/data/liked_list.dart';
 import '../../../../framework/data/product_list_data.dart';
 import '../../../../framework/repository/cart_checkout/repository/cart_provider.dart';
 import '../../../../framework/repository/product/model/product_detail_model.dart';
@@ -29,7 +29,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail> {
     // Watch the entire cart to ensure UI rebuilds when cart changes
     final cart = ref.watch(cartProvider);
     final isInCart = cart.any(
-          (item) => item.name == widget.productDetailModel.name,
+          (item) => item == widget.productDetailModel,
     );
 
     return Scaffold(
@@ -41,17 +41,17 @@ class _ProductDetailState extends ConsumerState<ProductDetail> {
         actions: [
           IconButton(
             onPressed: () {
-              if (likedList.contains(widget.productDetailModel)) {
-                likedList.remove(widget.productDetailModel);
-              } else {
-                likedList.add(widget.productDetailModel);
+              if(ref.watch(likedList.notifier).containsItem(widget.productDetailModel)){
+                ref.read(likedList.notifier).removeItem(widget.productDetailModel);
+              }else{
+                ref.read(likedList.notifier).addItem(widget.productDetailModel);
               }
             },
             icon: Icon(
               Icons.favorite,
-              color: likedList.contains(widget.productDetailModel)
-                  ? AppColors.error
-                  : AppColors.success,
+              color: ref.watch(likedList.notifier).containsItem(widget.productDetailModel)
+                  ? AppColors.success
+                  : AppColors.error
             ),
           ),
         ],
@@ -124,23 +124,23 @@ class _ProductDetailState extends ConsumerState<ProductDetail> {
                         ),
                       ),
                     ),
-                    ExpansionPanel(
-                      isExpanded: active2,
-                      canTapOnHeader: true,
-                      headerBuilder: (context, index) {
-                        return Text(
-                          "Rating",
-                          style: AppTextStyle.headerStyle(20, FontWeight.w500),
-                        );
-                      },
-                      body: ListView.builder(
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text("${widget.productDetailModel.rating}/5"),
-                          );
-                        },
-                      ),
-                    ),
+                    // ExpansionPanel(
+                    //   isExpanded: active2,
+                    //   canTapOnHeader: true,
+                    //   headerBuilder: (context, index) {
+                    //     return Text(
+                    //       "Rating",
+                    //       style: AppTextStyle.headerStyle(20, FontWeight.w500),
+                    //     );
+                    //   },
+                    //   body: ListView.builder(
+                    //     itemBuilder: (context, index) {
+                    //       return ListTile(
+                    //         title: Text("${widget.productDetailModel.rating}/5"),
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ),
                 SizedBox(height: 10),
@@ -176,29 +176,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail> {
                   ],
                 ),
                 SizedBox(height: 10),
-                Row(
-                  children: [
-                    Flexible(
-                      flex: 3,
-                      child: TextField(
-                        decoration: InputDecoration(border: OutlineInputBorder()),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Flexible(
-                      flex: 1,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.keyboard_arrow_down),
-                          ),
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+
                 SizedBox(height: 10),
                 if (!isInCart) ...[
                   SizedBox(

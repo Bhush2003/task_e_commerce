@@ -11,11 +11,28 @@ class DashboardStateNotifier extends StateNotifier<List<ProductDetailModel>>{
   DashboardStateNotifier() : super([]);
 
   void addCart(WidgetRef ref, ProductDetailModel productDetailModel){
-    ref.watch(cartProvider).add(productDetailModel);
+    ref.watch(cartProvider.notifier).addToCart(productDetailModel);
   }
 
   Future<void> addAllData()async {
     state.addAll(productDetailList);
     state=[...state, ...productDetailList ];
+  }
+
+
+}
+final chipProvider=StateNotifierProvider<ChipNotifier,List<bool>>((ref){
+  return ChipNotifier();
+});
+
+extension on Type {
+  void operator <(other) {}
+}
+
+class ChipNotifier extends StateNotifier<List<bool>>{
+  ChipNotifier():super([false,false,false,false]);
+
+  Future<void> changeChip(int index)async {
+    state[index]=!state[index];
   }
 }

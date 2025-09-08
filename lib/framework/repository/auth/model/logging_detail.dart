@@ -1,5 +1,5 @@
 class LoggingDetail{
-  static late final bool isLogged;
-  static late final bool isGuest;
-  static late final bool isSignup;
+  static bool isLogged=false;
+  static bool isGuest=false;
+  static bool isSignup=false;
 }

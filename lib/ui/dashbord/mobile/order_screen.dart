@@ -1,5 +1,6 @@
 import 'package:e_commerce_responsive/framework/provider/order/order_provider.dart';
 import 'package:e_commerce_responsive/framework/repository/cart_checkout/model/orders_models.dart';
+import 'package:e_commerce_responsive/framework/repository/dashbord/repository/dashboard_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../utils/consts/colors/colors.dart';
@@ -10,19 +11,18 @@ class OrderScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orderDetailList = ref.watch(orderProvider);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("My Orders"),
-        centerTitle: true,
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-      ),
       body: orderDetailList.isEmpty
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.shopping_bag_outlined, size: 80, color: Colors.grey),
+                  Icon(
+                    Icons.shopping_bag_outlined,
+                    size: 80,
+                    color: Colors.grey,
+                  ),
                   SizedBox(height: 16),
                   Text(
                     "No orders yet",
@@ -46,13 +46,37 @@ class OrderScreen extends ConsumerWidget {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          ChoiceChip(label: Text("All Orders"), selected: true),
+                          ChoiceChip(
+                            label: Text("All Orders"),
+                            onSelected: (val) {
+                              ref.read(chipProvider.notifier).changeChip(0);
+                            },
+                            selected: ref.read(chipProvider)[0],
+                          ),
                           SizedBox(width: 10),
-                          ChoiceChip(label: Text("Pending"), selected: false),
+                          ChoiceChip(
+                            label: Text("Pending"),
+                            onSelected: (val) {
+                              ref.read(chipProvider.notifier).changeChip(1);
+                            },
+                            selected: ref.watch(chipProvider)[1],
+                          ),
                           SizedBox(width: 10),
-                          ChoiceChip(label: Text("Shipped"), selected: false),
+                          ChoiceChip(
+                            label: Text("Shipped"),
+                            onSelected: (val) {
+                              ref.read(chipProvider.notifier).changeChip(2);
+                            },
+                            selected: ref.watch(chipProvider)[2],
+                          ),
                           SizedBox(width: 10),
-                          ChoiceChip(label: Text("Delivered"), selected: false),
+                          ChoiceChip(
+                            label: Text("Delivered"),
+                            onSelected: (val) {
+                              ref.read(chipProvider.notifier).changeChip(3);
+                            },
+                            selected: ref.watch(chipProvider)[3],
+                          ),
                         ],
                       ),
                     ),
@@ -113,7 +137,10 @@ class OrderScreen extends ConsumerWidget {
                               ],
                             ),
                             trailing: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.orange,
                                 borderRadius: BorderRadius.circular(12),
@@ -161,10 +188,12 @@ class OrderScreen extends ConsumerWidget {
               Text("Total Items: ${order.itemAdd}"),
               SizedBox(height: 16),
               Text("Products:", style: TextStyle(fontWeight: FontWeight.bold)),
-              ...order.productDetailModel.map((product) => Padding(
-                padding: EdgeInsets.only(left: 16, top: 4),
-                child: Text("• ${product.name} - \$${product.price}"),
-              )),
+              ...order.productDetailModel.map(
+                (product) => Padding(
+                  padding: EdgeInsets.only(left: 16, top: 4),
+                  child: Text("• ${product.name} - \$${product.price}"),
+                ),
+              ),
             ],
           ),
         ),
