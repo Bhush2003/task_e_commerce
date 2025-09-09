@@ -1,7 +1,7 @@
-import 'package:e_commerce_responsive/ui/dashbord/web/dashbord.dart';
+import 'package:e_commerce_responsive/ui/profile/mobile/profile.dart';
+import 'package:e_commerce_responsive/ui/profile/web/profile_web.dart';
 import 'package:flutter/material.dart';
 import '../../responsive_dashboard.dart';
-import 'mobile/dashbord.dart';
 
 class ResponsiveLayoutDashbord extends StatelessWidget {
   const ResponsiveLayoutDashbord({super.key});
@@ -10,6 +10,6 @@ class ResponsiveLayoutDashbord extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayoutW(
-        mobileBody: Dashboard(), desktopBody: DashboardWeb());
+        mobileBody: Profile(), desktopBody: ProfileWeb());
   }
 }

@@ -34,7 +34,7 @@ class ProfileWeb extends ConsumerWidget {
             SizedBox(height: 10),
 
             Text(
-              user.email,
+              user .email,
               style: AppTextStyle.headerStyle(24, FontWeight.w500),
             ),
 

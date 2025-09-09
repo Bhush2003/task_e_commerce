@@ -4,8 +4,8 @@ import 'package:e_commerce_responsive/framework/repository/auth/model/logging_de
 import 'package:e_commerce_responsive/framework/repository/auth/repository/simple_user.dart';
 import 'package:e_commerce_responsive/responsive_dashboard.dart';
 import 'package:e_commerce_responsive/ui/auth/mobile/login/login.dart';
-import 'package:e_commerce_responsive/ui/dashbord/mobile/dashbord.dart';
-import 'package:e_commerce_responsive/ui/dashbord/web/dashbord.dart';
+import 'package:e_commerce_responsive/ui/profile/mobile/profile.dart';
+import 'package:e_commerce_responsive/ui/profile/web/profile_web.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -187,13 +187,13 @@ class _SignupState extends State<SignupWeb> {
                               final newUser = SimpleUser(
                                 email: emailController.text,
                                 password: passwordController.text,
-                                userId: "#12345",
+                                userId: "${DateTime.now().microsecond}",
                                 imagePath: image!
                                     .path, // Store the path instead of File object
                               );
                               SignUpController.addUser(newUser);
                               // Update auth provider state with the new user
-                              ref.read(authProvider.notifier).state = newUser;
+                              ref.read(authProvider.notifier).signUp(newUser);
                               Navigator.pop(context);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -246,7 +246,7 @@ class _SignupState extends State<SignupWeb> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ResponsiveLayoutW(mobileBody: Dashboard(), desktopBody: DashboardWeb()),
+                          builder: (context) => ResponsiveLayoutW(mobileBody: Profile(), desktopBody: ProfileWeb()),
                         ),
                       );
                     },

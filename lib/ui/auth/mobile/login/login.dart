@@ -2,12 +2,12 @@ import 'package:e_commerce_responsive/framework/controllers/auth/auth_service.da
 import 'package:e_commerce_responsive/framework/controllers/auth/signup/signup_controller.dart';
 import 'package:e_commerce_responsive/responsive_dashboard.dart';
 import 'package:e_commerce_responsive/ui/auth/web/signup/signup.dart';
-import 'package:e_commerce_responsive/ui/dashbord/web/dashbord.dart';
+import 'package:e_commerce_responsive/ui/dashbord/web/product_list.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/app_key.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../dashbord/mobile/dashbord.dart';
+import '../../../dashbord/mobile/helper/product_list.dart';
 import '../../../utils/consts/theam/app_text_style.dart';
 import '../../helper/text_field_email.dart';
 import '../../helper/text_fild_password.dart';
@@ -27,7 +27,7 @@ class Login extends ConsumerWidget {
   }
 
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
@@ -59,7 +59,7 @@ class Login extends ConsumerWidget {
                 SizedBox(height: 10),
 
                 TextFieldEmail(
-                  controller: emailController,
+                  controller: _emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Email is required";
@@ -100,18 +100,18 @@ class Login extends ConsumerWidget {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         String result = await SignUpController().checkUser(
-                          emailController.text,
+                          _emailController.text,
                           passwordController.text,
                         );
                         if (result == login_success) {
                           // Update auth provider state with the logged-in user
                           final user = AuthService.getUser(
-                            emailController.text,
+                            _emailController.text,
                           );
 
                           Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                              builder: (context) => ResponsiveLayoutW(mobileBody: Dashboard(), desktopBody: DashboardWeb()),
+                              builder: (context) => ResponsiveLayoutW(mobileBody: ProductList(), desktopBody: ProductListWeb()),
                             ),
                             (route) => false,
                           );

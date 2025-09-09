@@ -2,10 +2,10 @@ import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/theam/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../framework/data/liked_list.dart';
 import '../../../../framework/data/product_list_data.dart';
 import '../../../../framework/repository/cart_checkout/repository/cart_provider.dart';
 import '../../../../framework/repository/product/model/product_detail_model.dart';
+import '../../../framework/repository/product/repository/liked_list.dart';
 
 class ProductDetailWeb extends ConsumerStatefulWidget {
   final ProductDetailModel productDetailModel;
@@ -40,15 +40,15 @@ class _ProductDetailState extends ConsumerState<ProductDetailWeb> {
         actions: [
           IconButton(
             onPressed: () {
-              if (likedList.contains(widget.productDetailModel)) {
-                likedList.remove(widget.productDetailModel);
+              if (ref.read(likedList).contains(widget.productDetailModel)) {
+                ref.read(likedList.notifier).removeItem(widget.productDetailModel);
               } else {
-                likedList.add(widget.productDetailModel);
+                ref.read(likedList.notifier).addItem(widget.productDetailModel);
               }
             },
             icon: Icon(
               Icons.favorite,
-              color: likedList.contains(widget.productDetailModel)
+              color: ref.read(likedList.notifier).containsItem(widget.productDetailModel)
                   ? AppColors.error
                   : AppColors.success,
             ),

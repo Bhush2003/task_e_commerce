@@ -3,10 +3,15 @@ import 'package:e_commerce_responsive/framework/provider/auth/auth_provider.dart
 import 'package:e_commerce_responsive/framework/repository/auth/model/logging_detail.dart';
 import 'package:e_commerce_responsive/framework/repository/auth/repository/simple_user.dart';
 import 'package:e_commerce_responsive/ui/auth/mobile/login/login.dart';
+import 'package:e_commerce_responsive/ui/helper/bottom_navigation_bar_widget.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/theam/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../framework/data/appbar_title.dart';
+import '../../../responsive_dashboard.dart';
+import '../../cart_checkout/mobile/cart_screen.dart';
+import '../../cart_checkout/web/cart_screen.dart';
 
 class Profile extends ConsumerWidget {
   const Profile({super.key});
@@ -17,6 +22,22 @@ class Profile extends ConsumerWidget {
 
     return LoggingDetail.isGuest?
         Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppColors.primary,
+            title: Text(appbarTitle[0]),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ResponsiveLayoutW(mobileBody: CartScreen(), desktopBody: CartScreenWeb())),
+                  );
+                },
+                icon: Icon(Icons.shopping_cart_outlined),
+              ),
+            ],
+            centerTitle: true,
+          ),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -131,6 +152,7 @@ class Profile extends ConsumerWidget {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }

@@ -1,6 +1,11 @@
+import 'package:e_commerce_responsive/framework/data/appbar_title.dart';
 import 'package:e_commerce_responsive/framework/provider/order/order_provider.dart';
 import 'package:e_commerce_responsive/framework/repository/cart_checkout/model/orders_models.dart';
 import 'package:e_commerce_responsive/framework/repository/dashbord/repository/dashboard_provider.dart';
+import 'package:e_commerce_responsive/responsive_dashboard.dart';
+import 'package:e_commerce_responsive/ui/cart_checkout/mobile/cart_screen.dart';
+import 'package:e_commerce_responsive/ui/cart_checkout/web/cart_screen.dart';
+import 'package:e_commerce_responsive/ui/helper/bottom_navigation_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../utils/consts/colors/colors.dart';
@@ -13,6 +18,16 @@ class OrderScreen extends ConsumerWidget {
     final orderDetailList = ref.watch(orderProvider);
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(appbarTitle[1]),
+        centerTitle: true,
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>ResponsiveLayoutW(mobileBody: CartScreen(), desktopBody: CartScreenWeb())));
+          }, icon: Icon(Icons.shopping_cart_outlined))
+        ],
+        backgroundColor: AppColors.primary,
+      ),
       body: orderDetailList.isEmpty
           ? Center(
               child: Column(
@@ -165,6 +180,7 @@ class OrderScreen extends ConsumerWidget {
                 ],
               ),
             ),
+      bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 

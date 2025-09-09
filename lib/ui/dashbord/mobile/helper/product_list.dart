@@ -1,5 +1,6 @@
 import 'package:e_commerce_responsive/framework/repository/cart_checkout/repository/cart_provider.dart';
 import 'package:e_commerce_responsive/framework/repository/product/model/product_detail_model.dart';
+import 'package:e_commerce_responsive/ui/helper/bottom_navigation_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../framework/repository/dashbord/repository/dashboard_provider.dart';
@@ -13,6 +14,7 @@ class ProductList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List<ProductDetailModel> productDetailList = ref.watch(dashboardProvider);
     return Scaffold(
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -90,7 +92,9 @@ class ProductList extends ConsumerWidget {
             ),
           ],
         ),
+
       ),
+      bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }

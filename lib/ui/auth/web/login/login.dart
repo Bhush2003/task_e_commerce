@@ -4,12 +4,12 @@ import 'package:e_commerce_responsive/framework/provider/auth/auth_provider.dart
 import 'package:e_commerce_responsive/responsive_dashboard.dart';
 import 'package:e_commerce_responsive/ui/auth/mobile/signup/signup.dart';
 import 'package:e_commerce_responsive/ui/auth/web/signup/signup.dart';
-import 'package:e_commerce_responsive/ui/dashbord/web/dashbord.dart';
+import 'package:e_commerce_responsive/ui/profile/mobile/profile.dart';
+import 'package:e_commerce_responsive/ui/profile/web/profile_web.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/app_key.dart';
 import 'package:e_commerce_responsive/ui/utils/consts/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../dashbord/mobile/dashbord.dart';
 import '../../../utils/consts/theam/app_text_style.dart';
 import '../../helper/text_field_email.dart';
 import '../../helper/text_fild_password.dart';
@@ -118,7 +118,7 @@ class LoginWeb extends ConsumerWidget {
                               }
                               Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                  builder: (context) => ResponsiveLayoutW(mobileBody: Dashboard(), desktopBody: DashboardWeb()),
+                                  builder: (context) => ResponsiveLayoutW(mobileBody: Profile(), desktopBody: ProfileWeb()),
                                 ),
                                 (route) => false,
                               );
